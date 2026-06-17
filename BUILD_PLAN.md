@@ -2,510 +2,444 @@
 
 ## 1. PRODUCT
 
-Uncle Inc. is a single-route marketing landing page for an AI-assisted MVP development platform. The page does one job: convert pre-launch founders who are sitting on an unvalidated idea into waitlist signups. It positions Uncle Inc. as the operator that turns a rough hypothesis into a tested, instrumented MVP without forcing the founder to write code or run a validation sprint by hand. The core value communicated is "validate before you build" — six capability pillars (AI prototyping, user testing, launch analytics, guided validation, no-code, real-data iteration), three transparent pricing tiers, six objection-handling FAQs, and a single email-capture CTA at the bottom. Pain solved: first-time founders waste months building the wrong thing; Uncle Inc. collapses the build→measure→learn loop into a guided, AI-assisted flow so they can confirm demand before sinking serious time and money.
+Uncle Inc. is a single Next.js 14 marketing landing page that introduces an AI-assisted MVP validation platform for first-time and early-stage startup founders. The page exists to convert qualified visitors — founders stuck between idea and build — into a pre-launch waitlist by demonstrating the platform's six core capabilities, transparent pricing, and answering objections in an FAQ. The specific pain addressed is the founder who has an idea but cannot afford the weeks of engineering, the cost of a dev agency, or the risk of building something nobody wants: Uncle promises a no-code path from idea to testable, measurable MVP in days. The marketing site itself must therefore feel decisive, technical, and trustworthy — Crisp Operator archetype — not playful or generic-SaaS.
 
 ## 2. WHO IT'S FOR
 
-The ICP is a non-technical or lightly technical first-time founder, typically 25–45, working on a side project or early-stage startup, who has an idea but no team, no design/dev capacity, and no validated signal that anyone actually wants what they plan to build. They are time-poor, skeptical of vague AI hype, and want concrete answers: what does it do, what does it cost, do I have to code, how do I know it works. The product and tone are shaped accordingly: zero jargon, feature cards named after concrete outcomes (not buzzwords), prices shown as plain dollars, no invented social proof, no fake logos. Tone is calm, confident, "Crisp Operator" — the page reads like a competent technical cofounder, not a growth-hacker. The hero is one sentence, the CTAs are two specific actions, the FAQ answers real objections a skeptic would type into Google.
+The ICP is the **non-technical first-time founder** (and the solo technical founder time-poor on design) who has validated the problem informally but has not yet shipped. They are 25–45, read Y Combinator essays, lurk on r/startups, have a Notion doc and maybe a Figma file, and have either failed to launch or watched a previous MVP crater from lack of signal. They are skeptical of vague AI hype and allergic to fake social proof — so the site copy must show concrete features, not invented logos or made-up user counts. This shapes the product:
+
+- **Tone:** confident, plain-spoken, no exclamation marks, no "supercharge your workflow."
+- **Density:** moderate — six feature cards and three pricing tiers is enough; padding the page with extra sections dilutes intent.
+- **Single primary conversion:** Join Waitlist. One hero CTA, one closing CTA, and a tertiary "See How It Works" link. No secondary funnels.
+- **No invented customers:** zero testimonials, zero "trusted by," zero download counts. The brand-board wireframes from the prior session confirm a Crisp Operator aesthetic, so the page reads like a product page from a real company at seed stage, not a YC startup with vapor claims.
 
 ## 3. LOOK & FEEL
 
 **Visual system**
-- Vibe/positioning: Crisp Operator. Clean enterprise UI, precise grids, confident whitespace. No gradients, no glassmorphism, no neon. Solid colors, hairline borders, tight type.
-- Color palette (Tailwind theme):
-  - `navy` #1A3A5C — primary, used for dark sections, footer, dark CTA band, heading accents
-  - `cobalt` #4A90D9 — interactive accent, links, primary buttons on light backgrounds
-  - `accent` #22C55E — single-purpose: "popular" badge, success micro-copy, the underline mark on the wordmark logo, and the "in stock / live" dot on the CTA
-  - `bg` #F8FAFC — page background
-  - `surface` #FFFFFF — cards
-  - `ink` #0F172A — body/heading text
-  - `muted` #64748B — secondary text
-  - `border` #E2E8F0 — 1px hairlines
-- Typography: Inter for h1–h4, IBM Plex Sans for body, paragraphs, buttons, FAQ answers. Source Code Pro only if a code snippet appears (it doesn't on this page). Weights: 400 body, 500 subheads, 600 h2, 700 h1.
-- Spacing/layout: 4px base unit, 1280px max container, 24px section vertical padding (96px on desktop), 4px border-radius (deliberately tight — enterprise feel, not consumer playful).
-- Components used: sticky top nav, two button variants (`primary` cobalt filled, `secondary` navy outline on light / white outline on dark), input with label, feature card, pricing card (with optional "popular" badge), accordion FAQ row, dark CTA band, footer.
-- Iconography: inline SVG, 24px, 1.5px stroke, currentColor. One icon per feature card, monochromatic cobalt. No icon font.
-- Imagery: none on this page. The product is a platform; an honest pre-launch landing page uses type, color, and structure to carry the message. No stock photos, no mockup screenshots of a product that does not exist yet.
-- Motion: minimal. 150ms ease-out on hover for buttons and links. FAQ rows animate height on open/close (200ms ease-in-out, 180px max). No scroll animations, no parallax.
 
-**Per-screen layout (this is a single page, sections top-to-bottom)**
+- **Archetype:** Crisp Operator — confident whitespace, precise grid, restrained color, type-led hierarchy. No gradients on backgrounds, no glassmorphism, no oversized illustrations.
+- **Color palette (in `tailwind.config.ts`):**
+  - `navy` `#1A3A5C` — primary, used for the CTA dark section, footer, headings on light.
+  - `cobalt` `#4A90D9` — secondary accent, used for the wordmark "Inc." dot, links, the "popular" pricing border, focus rings.
+  - `accent` `#22C55E` — single-action accent, used for the Join Waitlist button, the "MOST POPULAR" pill, the check icons in pricing, the active FAQ chevron.
+  - `ink` `#0F172A` — body text on light.
+  - `slate-500` `#64748B` — secondary text.
+  - `border` `#E2E8F0` — dividers, card borders.
+  - `surface` `#FFFFFF` — cards.
+  - `canvas` `#F8FAFC` — page background sections (alternating with white).
+- **Typography:**
+  - Headings: **Inter**, weights 600/700, tight tracking (`-0.02em` on h1, `-0.01em` on h2/h3).
+  - Body: **IBM Plex Sans**, weight 400/500, `leading-relaxed` (1.625) for body, 1.5 for UI.
+  - Numeric/feature labels: Inter 600 uppercase, `text-xs tracking-widest text-slate-500` for the "FEATURES" eyebrow.
+  - Loaded via `next/font/google` in `app/layout.tsx` with `subsets: ['latin']` and CSS variables `--font-inter` and `--font-plex`.
+- **Spacing & layout:** 4px base unit. Section vertical rhythm `py-20 md:py-28`. Container `max-w-7xl mx-auto px-6 lg:px-8`. 12-column grid on desktop, single column on mobile. Cards use `rounded-md` (4px), `border border-slate-200`, `bg-white`, `p-8`.
+- **Iconography:** lucide-react stroke icons only, 1.75px stroke, 20px default, 24px in feature cards, 16px inline. No emoji. The switchboard motif from the prior design session is reserved for the wordmark and a small inline glyph — not used decoratively.
+- **Imagery:** none on the marketing page. The brand is carried by typography, color, and the wordmark. (No hero illustration, no stock photo — this signals technical seriousness, not consumer friendliness.)
+- **Motion:** minimal. `transition-colors` on buttons and links, `transition-transform` on FAQ chevron rotation, `transition-all duration-200` on card hover (subtle `hover:border-cobalt/40 hover:-translate-y-0.5`). No scroll animations, no parallax, no auto-play anything.
 
-1. **Nav (sticky, 64px)**
-   - Left: wordmark "Uncle" in Inter 700 navy + a small green (#22C55E) underline glyph after the word; ".inc" implied by context.
-   - Center (md+): three text links — Features, Pricing, FAQ — Inter 500, 14px, muted, hover→ink.
-   - Right: "Join Waitlist" button, secondary variant (navy outline on light bg), 36px tall.
+**Screens (single page, sections top → bottom):**
 
-2. **Hero (96px top padding, 96px bottom)**
-   - Eyebrow chip: small pill, navy/10 bg, navy text, 12px, "AI-assisted MVP platform".
-   - H1: "Validate Your Startup Idea Before You Build It" — Inter 700, 48px mobile / 64px desktop, ink, max-width 820px, centered.
-   - Subtext: one paragraph, IBM Plex Sans 400, 18px, muted, max-width 640px, centered. Wording: "Uncle Inc. turns your idea into a working, testable MVP in days — with built-in user research, launch analytics, and AI-guided iteration. No code, no guesswork, no six-month build."
-   - Two CTAs, side-by-side, centered, 48px tall:
-     - Primary cobalt: "Start a Free Project"
-     - Secondary navy outline: "See How It Works"
-   - Below CTAs, 14px muted line: "Free to start · No credit card required". The small green dot (#22C55E) sits to the left of this line as a live/available signal.
-
-3. **Features (96px vertical padding)**
-   - Section header: H2 "Everything you need to go from idea to validated MVP" + muted subhead "Six tools, one workspace, zero engineering required."
-   - Grid: 3 columns desktop, 2 tablet, 1 mobile, 24px gap.
-   - 6 cards, each: white surface, 1px border, 16px padding, 4px radius.
-     - Top: 24px cobalt SVG icon, 40px from top of card.
-     - Title: Inter 600, 18px, ink.
-     - Body: IBM Plex Sans 400, 15px, muted, 2–3 lines.
-   - Card order and exact titles/copy:
-     1. **AI Rapid Prototyping** — "Describe your idea in plain English. Get a clickable, branded prototype in minutes, not weeks."
-     2. **Built-in User Testing** — "Recruit real testers from your audience, run guided tasks, and capture session recordings automatically."
-     3. **Launch Analytics** — "A live dashboard for signups, activation, and retention from the moment your MVP is live."
-     4. **Guided Validation** — "Step-by-step playbooks built on the Lean Startup method, adapted to your idea as you progress."
-     5. **No Code Required** — "Build, ship, and iterate visually. Every change you make is reviewed by AI for clarity and conversion."
-     6. **Iterate with Real Data** — "See what's working, what's not, and what to build next — backed by real user behavior, not opinions."
-
-4. **Pricing (96px vertical padding, light bg section — white surface)**
-   - H2: "Simple, founder-friendly pricing" + muted subhead "Start free. Upgrade only when you're ready to launch."
-   - 3 cards in a row (stacks on mobile), 24px gap. Middle card is "popular" — adds the green badge ribbon top-center, a 2px cobalt border, and a subtle shadow (0 1px 2px rgba(15,23,42,0.06)).
-   - Card structure (every card):
-     - Tier name (Inter 600, 20px)
-     - One-line description (muted, 14px)
-     - Price block: "$0" or "$29" or "$79" in Inter 700, 48px, ink, with "/mo" in muted 16px
-     - CTA button (full-width, 44px): "Get Started" / "Start Building" / "Start Team Trial". Middle card's button is primary cobalt; outer cards are secondary navy outline.
-     - 5 feature bullets, IBM Plex Sans 15px, with a small cobalt check SVG.
-   - Exact tiers and bullets:
-     - **Explorer** — $0 — "For founders validating their first idea."
-       - 1 active project
-       - AI prototyping (10 generations / mo)
-       - Up to 25 tester sessions
-       - Basic launch analytics
-       - Community support
-     - **Builder** — $29/mo — "For solo founders ready to launch and learn." [Popular]
-       - Unlimited projects
-       - Unlimited AI prototyping
-       - Up to 500 tester sessions
-       - Full launch analytics dashboard
-       - Guided validation playbooks
-     - **Team** — $79/mo — "For small teams running multiple experiments."
-       - Everything in Builder
-       - 5 team seats included
-       - Custom branding on prototypes
-       - Priority support (24h response)
-       - Export raw analytics data
-
-5. **FAQ (96px vertical padding)**
-   - H2: "Frequently asked questions" + muted subhead "Still on the fence? Here's what founders ask us most."
-   - 6 accordion rows, 1px border-bottom between rows, 0 top border, white background, max-width 820px centered.
-   - Row anatomy: question on the left (Inter 500, 17px, ink), plus/minus toggle on the right (cobalt), 20px vertical padding. Expanded: answer slides open in IBM Plex Sans 15px muted, 16px bottom padding.
-   - Questions and answers (exact):
-     1. **Do I need to know how to code?** — "No. Uncle Inc. is a visual, AI-assisted platform. If you can describe your idea, you can build a working MVP on Uncle."
-     2. **How is this different from a no-code website builder?** — "Website builders help you publish pages. Uncle Inc. helps you validate a product idea — with built-in user testing, analytics, and guided playbooks that adapt to what you're building."
-     3. **What does "AI-assisted" actually mean here?** — "Our AI drafts your prototype from a short description, reviews every change you make for clarity, and recommends the next validation step based on the data your MVP collects."
-     4. **Can I export my project or data?** — "Yes. Team plans include raw data export. All paid plans can export the project itself as a static site or a documented spec you can hand to developers later."
-     5. **How long does it take to get a prototype live?** — "Most founders have a clickable prototype within an hour of signing up, and a testable MVP in their first week."
-     6. **When will Uncle Inc. be generally available?** — "We're in private beta. Join the waitlist and you'll get an invite as soon as a spot opens — usually within two weeks."
-
-6. **CTA band (full-width, navy #1A3A5C background, 96px vertical padding)**
-   - H2 white: "Be first in line when we open access" + muted-cobalt subhead "Join the waitlist for early access, founder pricing, and a direct line to our team."
-   - Form, centered, single row on desktop (email input + button), stacked on mobile.
-     - Email input: 360px wide desktop, 48px tall, white surface, 4px radius, IBM Plex Sans 15px, placeholder "you@startup.com", 1px border #FFFFFF/20.
-     - Button: primary variant but white surface with navy text — "Join Waitlist", 48px tall, 8px left margin on desktop.
-   - Below the form, 13px white/70 microcopy: "We'll only email you about access. No spam, ever." A small green dot sits to the left.
-
-7. **Footer (white surface, 1px top border, 48px vertical padding)**
-   - Left: "© 2026 Uncle Inc. All rights reserved." in IBM Plex Sans 14px muted.
-   - Right: two text links, "Privacy" and "Terms", 14px muted, hover→ink.
+1. **Nav (sticky, `sticky top-0 z-50`, white with `border-b border-slate-200`):** height 64px. Left: wordmark "Uncle Inc." (Inter 600, navy, with a 6px cobalt dot as the period of "Inc"). Right on desktop: three text links — Features, Pricing, FAQ — in `text-sm text-ink/80 hover:text-navy`, 32px gap. Then a primary button "Join Waitlist" — `bg-accent text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-accent/90`. On mobile: links collapse into a hamburger that opens a full-screen sheet with the same three links stacked and the CTA at the bottom.
+2. **Hero (`bg-white`, `pt-28 pb-24 md:pt-36 md:pb-32`):** Centered on desktop, max-width 56rem.
+   - Eyebrow: `text-xs font-semibold tracking-widest text-cobalt uppercase` reading "FOR FIRST-TIME FOUNDERS".
+   - H1: Inter 700, `text-5xl md:text-6xl lg:text-7xl`, `text-navy`, `tracking-tight`, `leading-[1.05]`: "Validate Your Startup Idea Before You Build It."
+   - Subhead: IBM Plex Sans 400, `text-lg md:text-xl text-slate-500`, `max-w-2xl mx-auto`, `mt-6`: "Uncle turns your idea into a testable MVP in days, not months. Prototype with AI, run real user tests, and decide what to build next — without writing code or hiring a team."
+   - CTA row (`mt-10`): two buttons side-by-side, centered, flex-wrap.
+     - Primary: `bg-accent text-white px-6 py-3.5 rounded-md text-base font-semibold hover:bg-accent/90` → "Join the Waitlist".
+     - Secondary: `border border-navy/20 text-navy bg-white px-6 py-3.5 rounded-md text-base font-semibold hover:border-navy hover:bg-navy/5` → "See How It Works" (anchors to `#features`).
+   - Below CTAs: `mt-5` a single line `text-sm text-slate-500` — "No credit card. Early access invites roll out weekly." Honest, no fake urgency.
+3. **Features (`bg-canvas`, `py-20 md:py-28`, id `features`):**
+   - Section header centered, `max-w-2xl mx-auto text-center`: eyebrow `text-xs font-semibold tracking-widest text-cobalt uppercase` "WHAT YOU GET", h2 Inter 600 `text-3xl md:text-4xl text-navy` "Everything you need to go from idea to evidence.", sub `mt-3 text-slate-500`.
+   - Grid: `mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6`.
+   - Each card: `bg-white border border-slate-200 rounded-md p-8 hover:border-cobalt/40 transition-all duration-200`. Top: a 44×44 square `bg-navy/5 rounded-md` containing a lucide icon in `text-cobalt`. Then `mt-5` Inter 600 `text-lg text-navy` title, `mt-2` IBM Plex Sans `text-sm text-slate-500 leading-relaxed` two-line description. Six cards in this exact order, each with a distinct lucide icon:
+     1. **AI Rapid Prototyping** — `Wand2` — "Describe your idea. Uncle generates a working prototype you can share the same day."
+     2. **Built-in User Testing** — `Users` — "Recruit testers from your network or ours. Capture sessions, surveys, and qualitative feedback in one place."
+     3. **Launch Analytics** — `BarChart3` — "See where users drop off, what they click, and what they ignore — from day one."
+     4. **Guided Validation** — `Compass` — "Follow a step-by-step playbook that tells you what to test, when, and what counts as a signal."
+     5. **No Code Required** — `Blocks` — "Build, edit, and ship without touching a codebase. Founders ship. Engineers polish later."
+     6. **Iterate with Real Data** — `RefreshCw` — "Replace gut feel with usage data. Decide the next sprint from what real people actually did."
+4. **Pricing (`bg-white`, `py-20 md:py-28`, id `pricing`):**
+   - Same header pattern: eyebrow "PRICING", h2 "Simple plans. Cancel anytime.", sub.
+   - Grid: `mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto`. Each tier card `rounded-md p-8 flex flex-col`. The middle ("Builder") card gets `border-2 border-cobalt` and a `MOST POPULAR` pill (`absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full`) and the card uses `relative`.
+   - Card anatomy top→bottom: tier name (Inter 600 `text-base text-slate-500 uppercase tracking-widest`), then price block — `mt-4` Inter 700 `text-5xl text-navy` for the number, `text-base text-slate-500` for "/mo" (or "Free" for Explorer), then a one-line description `mt-2 text-sm text-slate-500`, then a hairline `my-6 border-t border-slate-200`, then a 5-item feature list where each row is a flex with a 16px `Check` lucide icon in `text-accent` and `text-sm text-ink` label, then a button pushed to the bottom with `mt-auto pt-8`.
+   - Tiers (kept exactly as the goal specified):
+     - **Explorer — Free**: 1 project, AI prototyping (limited runs), 1 active user test, 7-day analytics retention, community support. Button: secondary style "Start Free".
+     - **Builder — $29/mo (MOST POPULAR)**: 5 projects, unlimited AI prototyping, 10 active user tests, 90-day analytics, email support, guided validation playbooks. Button: accent primary "Join Waitlist".
+     - **Team — $79/mo**: Everything in Builder + unlimited projects, unlimited user tests, 1-year analytics, 3 seats included, priority support, custom domains. Button: navy primary "Join Waitlist".
+   - Footnote under grid: `mt-8 text-center text-sm text-slate-500` — "Prices in USD. All plans include a 14-day refund window after launch."
+5. **FAQ (`bg-canvas`, `py-20 md:py-28`, id `faq`):**
+   - Header: eyebrow "FAQ", h2 "Questions, answered."
+   - Container: `max-w-3xl mx-auto mt-12`. List of 6 items, each a row separated by `border-b border-slate-200`. Use `<details>` + `<summary>` for native accessibility, with a custom-styled chevron `Plus` from lucide that rotates 45° when open. Summary is `flex items-center justify-between py-5 cursor-pointer list-none` (with `::-webkit-details-marker { display: none }` CSS reset), question text in Inter 600 `text-base md:text-lg text-navy`, answer in `mt-3 pb-5 text-slate-500 text-sm md:text-base leading-relaxed`. Use `<details name="faq">` so only one is open at a time on browsers that support exclusive accordion (graceful fallback to multi-open elsewhere).
+   - The 6 questions and answers:
+     1. "What exactly is Uncle?" — "Uncle is an AI-assisted platform that helps founders turn an idea into a testable MVP without writing code. You describe the problem, Uncle helps you build a prototype, recruit testers, collect feedback, and decide what to ship next."
+     2. "Do I need to know how to code?" — "No. Uncle is built for non-technical founders. If you can write a clear problem statement, you can use Uncle. Engineers can still get involved later through exports and APIs."
+     3. "How is this different from a no-code tool like Bubble or Webflow?" — "Those tools help you build. Uncle helps you decide whether to build. The focus is on validation — prototypes, user tests, and real usage data — before you commit to a full product."
+     4. "What does 'AI-assisted' actually mean here?" — "Uncle uses AI to draft prototypes from your problem description, suggest test scripts, summarize user feedback, and highlight patterns in your analytics. You stay in control of every decision."
+     5. "When can I start using it?" — "Uncle is in private beta. Joining the waitlist puts you in line for an invite — early access rolls out in small batches so we can give every founder real attention."
+     6. "Can I cancel or change plans later?" — "Yes. You can upgrade, downgrade, or cancel at any time. After public launch, every plan includes a 14-day refund window."
+6. **CTA (`bg-navy`, `py-20 md:py-28`):**
+   - Centered, `max-w-2xl mx-auto text-center`. H2 Inter 600 `text-3xl md:text-4xl text-white` "Ready to stop guessing?" (honest — not "Ready to launch in 30 seconds?"). Sub `mt-4 text-base md:text-lg text-white/70` "Join the Uncle waitlist. We'll email you when it's your turn."
+   - Form `mt-8`: a single horizontal flex on desktop, stacked on mobile. `flex flex-col sm:flex-row gap-3 max-w-md mx-auto`.
+     - Email input: `flex-1 px-4 py-3.5 rounded-md bg-white text-ink placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-accent`, `type="email" required`, placeholder "you@startup.com".
+     - Submit: `bg-accent text-white px-6 py-3.5 rounded-md font-semibold hover:bg-accent/90` "Join Waitlist".
+   - Microcopy `mt-4 text-sm text-white/60` "We email sparingly. Unsubscribe in one click."
+   - On submit, the form posts to `/api/waitlist` (POST) which returns `{ ok: true }`; the client swaps the form for a confirmation `<p class="text-white">You're on the list. We'll be in touch.</p>` and persists nothing in localStorage (single-use confirmation only).
+7. **Footer (`bg-navy border-t border-white/10`, `py-10`):**
+   - `max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4`.
+   - Left: wordmark "Uncle Inc." in white, Inter 600.
+   - Right: link row `flex gap-6 text-sm text-white/70 hover:text-white` — "Privacy" (anchor to `#` — no real page yet, honest placeholder), "Terms" (same), and a `text-white/50` "© 2026 Uncle Inc.".
+   - On mobile: stacked, centered.
 
 ## 4. USER FLOWS
 
-**Primary flow: visitor → waitlist signup**
-1. Land on `/` (this is the only route).
-2. Read hero, click "Start a Free Project" → anchors to `#waitlist` (the CTA band section). No real account creation on this page; the button scrolls, it does not open a modal that pretends to sign them up.
-3. Alternative path: read Features → Pricing → FAQ, then click "Join Waitlist" in the nav or scroll to the bottom band.
-4. In the email input, type address, click "Join Waitlist".
-5. Submit state: button shows "Joining…" (disabled, same dimensions to prevent layout shift), input becomes readonly. On success: input is replaced inline with a success line "✓ You're on the list. We'll be in touch." in white text with a small green dot. On error: input border turns red-ish (use #EF4444), helper text below says "Something went wrong. Try again."
-6. No persistence requirement is in the spec (this is a static marketing page), so the form is a client component that calls a `fetch('/api/waitlist', { method: 'POST', body: JSON.stringify({ email }) })` endpoint. If the API route is not implemented, the form should still function as a no-op success in dev (return `{ ok: true }` after a short delay) so the page is honest and complete. The plan does not include a database for this landing page — it is a single-route marketing site.
+The site is a single-page marketing surface, so flows are short and explicit:
 
-**Secondary flow: visitor → pricing → waitlist**
-1. Visitor reads pricing.
-2. Clicks the middle "Builder" card's "Start Building" CTA.
-3. Same scroll-to-`#waitlist` behavior as the hero CTA. All "Get Started" / "Start Building" / "Start Team Trial" buttons anchor to `#waitlist`. The free and team CTAs are deliberately the same target — there is no checkout on this page.
+**Flow A — Primary conversion (Join Waitlist)**
+1. Visitor lands from any source → sees Hero with H1, subhead, and two CTAs.
+2. Scrolls (or clicks "See How It Works" which smooth-scrolls to `#features`).
+3. Reviews six feature cards → scrolls to Pricing → reviews three tiers.
+4. Hovers FAQ items, expands one or two to check objection handling.
+5. Reaches dark CTA section. Types email → clicks "Join Waitlist".
+6. Client-side: `e.preventDefault()`, POST `/api/waitlist` with `{ email }`.
+7. On 200: form is replaced with confirmation text; email input is cleared from DOM.
+8. On 400 (validation): input border turns red via `aria-invalid` + `border-red-400`, helper text "Enter a valid email" appears under the input.
+9. On 500/network: form stays, button text becomes "Try again", and a small `<p class="text-amber-300 text-sm mt-2">Something went wrong. Try again in a moment.</p>` appears.
 
-**FAQ flow**
-- Click any FAQ row → row expands, plus icon rotates to minus, answer fades in. Click again to collapse. Each row independent (multiple can be open).
+States: idle → submitting (button disabled, label "Joining…", `opacity-70 cursor-not-allowed`) → success | error.
 
-**States (every interactive element)**
-- Buttons: default, hover (slight darken, 150ms), focus-visible (2px cobalt ring, 2px offset), disabled (40% opacity, cursor not-allowed).
-- Nav links: default muted, hover ink, focus-visible cobalt underline 2px.
-- FAQ rows: default closed, hover background `bg` (#F8FAFC), open white surface with cobalt left-border 2px.
-- Email input: default white with 1px border `border`, focus 1px cobalt + 2px cobalt/20 ring, error 1px #EF4444, success hidden (replaced by message).
-- Mobile (≤640px): nav collapses to logo + "Join Waitlist" button only; hero text 36px; features grid 1-col; pricing 1-col stacked with "popular" card still visually marked; FAQ full width; CTA form stacked.
+**Flow B — Sticky nav shortcut**
+1. User on any section clicks "Pricing" in the nav → smooth scroll to `#pricing` (using `scroll-behavior: smooth` on `html` and `scroll-margin-top: 80px` on each section to clear the sticky nav).
+2. Same for "Features" → `#features` and "FAQ" → `#faq`.
 
-## 5. PAGES/ROUTES
+**Flow C — Mobile menu**
+1. On `< md`, hamburger button appears top-right.
+2. Tap → full-height fixed sheet slides in (`fixed inset-0 bg-white z-50`), nav links stacked vertically with large tap targets (py-4), close button top-right, "Join Waitlist" button at bottom (`mt-auto`).
+3. Tap a link → close sheet + smooth-scroll to anchor.
 
-| Route | Purpose | Layout | Main UI |
-|---|---|---|---|
-| `/` | The marketing landing page. The entire product for this build. | Single page, sections stacked: Nav → Hero → Features → Pricing → FAQ → CTA → Footer | All components |
-| `/api/waitlist` (POST) | Accepts `{ email: string }`. Validates email format, returns `{ ok: true }` after a short artificial delay. No DB write (out of scope for this build; documented as a future integration). Returns 400 on invalid email. | API route, JSON | — |
-| `/privacy` | Stub page. 2 sections of placeholder copy, same nav and footer. Required because the footer links to it. | Reuses Nav + Footer | "Privacy Policy" h1 + 1 paragraph + "Last updated: 2026" |
-| `/terms` | Stub page. Same as `/privacy` but with "Terms of Service". | Reuses Nav + Footer | "Terms of Service" h1 + 1 paragraph + "Last updated: 2026" |
+**Flow D — FAQ accordion**
+1. Tap summary → `<details>` toggles open. Chevron rotates 45°. Only one open at a time via shared `name="faq"` attribute (with progressive enhancement).
+2. On mobile, tapping a link in the sticky nav that resolves to the FAQ section will auto-close the mobile menu first.
 
-No other routes. No dashboard, no auth, no `/app/*` — the goal is a marketing landing page, and the spec is explicit about that scope. The plan acknowledges in the CTA band that full product access is gated by the waitlist.
+## 5. PAGES / ROUTES
+
+| Route | Purpose | Layout & main UI elements |
+|---|---|---|
+| `/` | The marketing landing page. The only user-facing page. | `<Nav />` sticky → `<Hero />` → `<Features />` → `<Pricing />` → `<FAQ />` → `<CTA />` → `<Footer />`. Sectioned by id for in-page anchors. |
+| `/api/waitlist` | POST endpoint to accept waitlist emails. | Route handler: validates `email` (zod or simple regex), inserts into Supabase table `waitlist` (columns: `id`, `email`, `created_at`), returns `{ ok: true }` on success or `{ ok: false, error }` on failure. If Supabase env vars are not configured, falls back to logging the email to the server console and returning `{ ok: true }` so the UI works in any environment — the form must never feel broken to a visitor. |
+| `/_not-used` | — | No dashboard, no /login, no /signup, no /app. The product goal is explicitly a marketing landing page; building an authenticated app is out of scope and would be vapor. |
 
 ## 6. CORE FEATURES
 
-1. **Sticky navigation with anchor links and CTA**
-   - What it does: stays at the top of the viewport on scroll, provides anchor navigation to Features / Pricing / FAQ sections, and surfaces a "Join Waitlist" CTA.
-   - How: `position: sticky; top: 0` on a `<nav>`. `scroll-behavior: smooth` set on `html` in `globals.css` for anchor jumps. Mobile: hides center links, shows logo + CTA only.
+These are the features the marketing page *describes and demonstrates*. None of them require a live backend to be honest on the page — they describe what the platform does, not what this site does.
 
-2. **Hero with two CTAs and anchor scroll**
-   - What it does: communicates the value prop in one headline and routes the user to two distinct next steps.
-   - How: h1 + subtext + two buttons. Primary button (`#waitlist`), secondary button (`#how-it-works` — a small in-page "how it works" explainer block inserted between Hero and Features, see below). Both use `<a href="#…">`.
-
-3. **"How it works" explainer (3 steps)**
-   - What it does: gives the visitor a 30-second mental model of the product flow so the Features grid has context.
-   - How: a single horizontal row of 3 numbered steps with cobalt numerals: 1. Describe your idea, 2. Get a clickable prototype, 3. Test with real users and iterate. Each step has a 1-line IBM Plex Sans 14px muted description. This is the anchor target for the secondary CTA "See How It Works" and is required to make that second CTA honest (a button that scrolls to nothing is a dead UI).
-
-4. **Features grid (6 cards)**
-   - What it does: enumerates concrete capabilities, each with a distinct icon and 2–3 line description.
-   - How: CSS grid 1/2/3 cols. Each card is a `<div>` with icon + h3 + p. Icons are inline SVG components in a `components/icons.tsx` file.
-
-5. **Pricing (3 tiers, middle marked popular)**
-   - What it does: presents transparent monthly pricing with explicit feature bullets.
-   - How: 3 flex/grid cards. Middle card adds `border-2 border-cobalt` + the green "Popular" badge absolutely positioned at the top. All CTAs anchor to `#waitlist`.
-
-6. **FAQ accordion (6 items)**
-   - What it does: answers the six most common pre-signup questions and reduces support burden.
-   - How: 6 `<details>` / `<summary>` elements (native HTML, accessible by default, no JS library required). Styled with Tailwind to match the design system. Only one needs to be open at a time — handled by toggling siblings' `open` attribute on `toggle` event using a small client component (`'use client'`) wrapper.
-
-7. **Waitlist email capture**
-   - What it does: collects an email and gives the user clear success/error feedback.
-   - How: client component with controlled input + button. On submit, `POST /api/waitlist` with `{ email }`. Button disabled during request. On `ok: true`, swap input area for a success line. On error, show inline error.
-
-8. **Footer with legal links**
-   - What it does: provides copyright and routes to stub Privacy and Terms pages.
-   - How: flex row, left text + right links.
-
-9. **Stub Privacy and Terms pages**
-   - What it does: gives the footer links a real destination with honest placeholder copy.
-   - How: minimal pages reusing `<Nav />` and `<Footer />`, one paragraph of neutral placeholder text noting that final policies will be published before general availability.
+1. **AI Rapid Prototyping** (described in card 1) — Uncle generates a working prototype from a problem description. On the marketing page, this is communicated by the card copy, the H1 promise, and the `Wand2` icon. No interactive demo on the marketing page (would feel gimmicky and require backend).
+2. **Built-in User Testing** (card 2) — Capture sessions, surveys, and feedback in one place. Card-only; no in-page demo.
+3. **Launch Analytics** (card 3) — Drop-off, click, and ignore reporting from day one. Card-only.
+4. **Guided Validation** (card 4) — Step-by-step playbook telling founders what to test, when, and what counts as signal. Card-only.
+5. **No Code Required** (card 5) — Build, edit, and ship without a codebase. Reinforced in the Hero subhead.
+6. **Iterate with Real Data** (card 6) — Replace gut feel with usage data. Card-only.
+7. **Pricing transparency** (Pricing section) — three concrete tiers, real prices, real per-tier limits, one "Most Popular" call-out. No "Contact us" hidden tier. The middle tier uses a `border-cobalt` outline so the eye lands there; the accent pill above the card labels the choice for skimmers.
+8. **FAQ objection handling** (FAQ section) — six questions covering what it is, who it's for, how it differs from no-code tools, what "AI-assisted" means, when users can start, and billing terms. Each answer is plain, specific, and avoids marketing puffery.
+9. **Email waitlist capture** (CTA section) — single email input, primary action. Posts to `/api/waitlist`. Client-side validation, loading state, success state, error state. Disabled state on submit to prevent double-submit. Honeypot hidden field (`<input name="company" tabIndex={-1} className="hidden" />`) — if filled, the request is silently accepted but not stored.
+10. **Sticky navigation with in-page anchors** — `Features`, `Pricing`, `FAQ` smooth-scroll to their sections. Mobile hamburger sheet.
+11. **Honest copy & no fake social proof** — explicitly no testimonials, no customer logos, no download counts, no "as seen in" press mentions, no star ratings. The brand-board wireframes confirm this is intentional; building these in would be both dishonest and off-archetype.
 
 ## 7. DATA MODEL
 
-This is a static marketing page. The only runtime data is the waitlist submission.
+The only data the marketing site itself owns is the waitlist capture. There is no user account system on this site (out of scope).
 
-**WaitlistSubmission** (logical entity; no persistence in this build)
-- `email: string` — required, validated against a basic RFC-5322 regex client- and server-side.
-- `submittedAt: ISODate` — set server-side in the API route.
-- `source: 'hero' | 'pricing' | 'nav' | 'footer-band'` — derived from a hidden form field or referrer, optional.
+**Table: `waitlist`** (Supabase Postgres)
+| Field | Type | Constraints | Notes |
+|---|---|---|---|
+| `id` | `uuid` | PK, default `gen_random_uuid()` | |
+| `email` | `text` | NOT NULL, UNIQUE, lowercased before insert, regex `^[^\s@]+@[^\s@]+\.[^\s@]+$` | Normalize on insert: `email.trim().toLowerCase()`. On conflict, no-op. |
+| `created_at` | `timestamptz` | NOT NULL, default `now()` | |
+| `source` | `text` | nullable | Optional `referer` header or UTM param. Default `null`. |
 
-The API route validates, returns `{ ok: true }` after a 400ms artificial delay to give realistic loading feedback, and logs to console. There is no database table in this build; the entity is documented so a future iteration can wire the same API route to Supabase or a similar store without changing the contract.
+**Environment variables** (read in the route handler, never exposed to the client):
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `WAITLIST_FALLBACK_LOG_ONLY` (optional, default `true` — if Supabase env vars are missing, log to console and return `ok: true`)
 
-No other entities. No user accounts, no projects, no analytics rows — those are product features behind the waitlist.
+**Client state (transient only):**
+- `formState`: `'idle' | 'submitting' | 'success' | 'error'`
+- `errorMessage`: `string | null`
+
+No localStorage, no cookies, no analytics SDK embedded (intentional — the page is honest about not yet having traffic to measure). A `<Script>` for a privacy-respecting counter (e.g., Plausible) is **not** added; this is a brand decision and out of scope here.
 
 ## 8. AUTH
 
-No auth on this build. The landing page is pre-launch and intentionally has no login surface. The only protected-feeling action is the waitlist email capture, which is unauthenticated by design and does not require a session.
-
-If a future iteration adds `/app/*` routes requiring auth, the plan should default to **Supabase Auth with email + password and magic-link**, both of which work with no external OAuth configuration. Do not add Google/GitHub/social buttons in this build — there is no auth at all, and adding buttons that link to nowhere would be dishonest.
+**No authentication is implemented on this site.** The product goal is a marketing landing page; adding `/login`, `/signup`, or any auth UI would be scope creep and visually inconsistent with the Crisp Operator archetype (which is honest about pre-launch state). The waitlist form is anonymous email capture only. Supabase Auth is **not** wired up here. If a future iteration adds an authenticated dashboard, the recommended path is Supabase Auth with email+password and magic-link (no Google/GitHub buttons until real OAuth credentials are provisioned) — but that is explicitly **not** in this build.
 
 ## 9. FILES
 
-```
-package.json                              # Next.js 14, react, tailwindcss, typescript, autoprefixer, postcss
-next.config.js                            # Minimal Next.js config (reactStrictness on if desired)
-tsconfig.json                             # Standard Next.js TS config with @/* path alias
-tailwind.config.ts                        # Theme tokens: navy/cobalt/accent/ink/muted/border/bg/surface, fonts, 4px spacing
-postcss.config.js                         # tailwindcss + autoprefixer
-app/globals.css                           # Tailwind directives, html { scroll-behavior: smooth }, body bg
-app/layout.tsx                            # Root layout, Inter + IBM Plex Sans via next/font, metadata (title, description, OG)
-app/page.tsx                              # Imports and renders Nav, Hero, HowItWorks, Features, Pricing, FAQ, CTA, Footer
-app/privacy/page.tsx                      # Stub privacy policy page, uses Nav + Footer
-app/terms/page.tsx                        # Stub terms of service page, uses Nav + Footer
-app/api/waitlist/route.ts                 # POST handler: validates email, returns { ok: true } after 400ms
-components/Nav.tsx                        # Sticky nav with wordmark, anchor links, Join Waitlist button
-components/Hero.tsx                       # H1, subtext, two CTAs, free-to-start microcopy
-components/HowItWorks.tsx                 # 3-step explainer, anchor target for Hero's secondary CTA
-components/Features.tsx                   # Section header + 6-card responsive grid
-components/FeatureCard.tsx                # Single feature card (icon + title + body)
-components/icons.tsx                      # 6 inline SVG icon components (24px, 1.5px stroke, currentColor)
-components/Pricing.tsx                    # Section header + 3 tier cards, middle "popular"
-components/PricingCard.tsx                # Single pricing card with optional popular badge
-components/FAQ.tsx                        # Section header + 6 accordion rows
-components/FAQItem.tsx                    # Single FAQ accordion row (uses <details>/<summary>)
-components/CTA.tsx                        # Navy band with email form, client component, calls /api/waitlist
-components/Footer.tsx                     # Copyright + Privacy/Terms links
-components/Logo.tsx                       # Wordmark "Uncle" in Inter 700 navy with green underline glyph
-components/Section.tsx                    # Shared wrapper enforcing 1280px container, 96px vertical padding
-public/favicon.ico                        # Placeholder favicon (can be empty 1x1, or the icon logo)
-```
+Concrete file tree, each with its purpose:
+
+- `package.json` — declares Next.js 14 (`next@14.2.x`), React 18, TypeScript 5, Tailwind 3, PostCSS, Autoprefixer, lucide-react, and (only if using Supabase) `@supabase/supabase-js`. Scripts: `dev`, `build`, `start`, `lint`.
+- `next.config.js` — minimal config; no experimental flags; `reactStrictMode: true`.
+- `tsconfig.json` — Next.js standard, `"strict": true`, `"moduleResolution": "bundler"`, path alias `@/*` → `./*`.
+- `tailwind.config.ts` — extends colors (`navy`, `cobalt`, `accent`, `ink`, `canvas`), `fontFamily` (`sans: ['var(--font-inter)', 'system-ui', 'sans-serif']`, `plex: ['var(--font-plex)', ...]`, `mono: ['var(--font-mono)', ...]` — though mono is loaded for completeness per the design tokens), `borderRadius` defaults, content globs `./app/**/*.{ts,tsx}` and `./components/**/*.{ts,tsx}`.
+- `postcss.config.js` — `tailwindcss` + `autoprefixer`.
+- `app/globals.css` — Tailwind `@tailwind base/components/utilities`; resets `details > summary { list-style: none }` and `details > summary::-webkit-details-marker { display: none }`; sets `html { scroll-behavior: smooth }`; sets `section[id] { scroll-margin-top: 80px }`; defines focus-visible ring utility `@layer utilities { .focus-ring { @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt focus-visible:ring-offset-2 } }`.
+- `app/layout.tsx` — root layout. Loads Inter via `next/font/google` (variable `--font-inter`, weight array `['400','500','600','700']`), IBM Plex Sans via `next/font/google` (variable `--font-plex`, weights `['400','500']`). Sets `metadata`: `title: { default: "Uncle Inc. — Validate Your Startup Idea", template: "%s · Uncle Inc." }`, `description: "An AI-assisted MVP platform that helps founders go from idea to testable prototype — without writing code."`, `openGraph` with title/description/type/URL, `twitter: { card: "summary", title, description }`, `robots: { index: true, follow: true }`. Body: `className={`${inter.variable} ${plex.variable} font-plex bg-white text-ink antialiased`}`. Wraps children in a single `<div className="min-h-screen flex flex-col">` so the footer can stick to the bottom of short viewports.
+- `app/page.tsx` — server component that imports and renders `<Nav />`, `<main>` containing `<Hero />`, `<Features />`, `<Pricing />`, `<FAQ />`, `<CTA />`, and `<Footer />`. Exports `metadata` overrides for the homepage (`title: "Uncle Inc. — Validate Your Startup Idea Before You Build It"`).
+- `app/api/waitlist/route.ts` — POST handler. Validates email, attempts Supabase insert if env vars are present, otherwise logs to console. Always returns 200 `{ ok: true }` to the client unless validation fails (400). Sets `Cache-Control: no-store`.
+- `components/Nav.tsx` — client component (uses `useState` for mobile menu). Sticky header, wordmark, three anchor links, "Join Waitlist" button (anchor to `#waitlist`). Mobile hamburger with full-screen sheet.
+- `components/Hero.tsx` — server component. Eyebrow, H1, subhead, two CTAs (primary = anchor to `#waitlist`, secondary = anchor to `#features`).
+- `components/Features.tsx` — server component. Section wrapper with id and header, then a 3×2 grid of `FeatureCard` items (defined inline or as a local sub-component in the same file).
+- `components/Pricing.tsx` — server component. Section with header and 3-column grid of `TierCard` items. Middle card has `relative` + `border-2 border-cobalt` + `MOST POPULAR` pill.
+- `components/FAQ.tsx` — client component (uses `<details>` natively; no state needed). Renders the 6-item list with lucide `Plus` chevron rotated via `[&[open]>summary_svg]:rotate-45` Tailwind arbitrary variant.
+- `components/CTA.tsx` — client component (form state). Email input, submit button, honeypot field. Handles submit → POST → swap to success message.
+- `components/Footer.tsx` — server component. Wordmark, Privacy/Terms anchors, copyright.
+- `lib/supabase.ts` — optional. Exports a `getSupabaseAdmin()` factory that returns a Supabase client using `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` if both are set, otherwise returns `null`. Imported by the route handler.
+- `lib/validate.ts` — exports `isValidEmail(value: string): boolean` (single regex, used in both client and server).
+- `.env.example` — documents `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` as optional. Includes a comment that the site works without them (fallback log-only mode).
+- `README.md` — one paragraph: what Uncle is, `npm install` / `npm run dev` / `npm run build`, link to the optional env vars, and a note that there are no fake metrics on the page by design.
 
 ## 10. ACCEPTANCE
 
-- [ ] `npm install` then `npm run dev` starts the app on `http://localhost:3000` with no errors and no TypeScript errors.
-- [ ] `npm run build` completes successfully.
-- [ ] Visiting `/` renders the full page: Nav, Hero, HowItWorks (3 steps), Features (6 cards in 3-col grid on desktop), Pricing (3 tiers, middle visually marked popular), FAQ (6 items), CTA band, Footer — in that order.
-- [ ] Color tokens match: navy #1A3A5C, cobalt #4A90D9, accent #22C55E are present in `tailwind.config.ts` and used in the rendered output (verifiable via DevTools).
-- [ ] Fonts: Inter is applied to h1–h4; IBM Plex Sans is applied to body, paragraphs, buttons, and FAQ answers.
-- [ ] Nav is sticky on scroll; clicking "Features", "Pricing", "FAQ" smooth-scrolls to the correct section.
-- [ ] Hero primary CTA scrolls to the waitlist band; secondary CTA scrolls to the "How it works" section.
-- [ ] All three pricing card CTAs scroll to the waitlist band.
-- [ ] FAQ rows expand and collapse on click; only one row is open at a time; keyboard accessible (Tab focuses, Enter/Space toggles).
-- [ ] Waitlist form: submitting a valid email shows a success message; submitting an invalid email shows an inline error; button is disabled during the request.
-- [ ] `/api/waitlist` returns `{ ok: true }` for valid emails and HTTP 400 for invalid.
-- [ ] `/privacy` and `/terms` render with Nav and Footer and a single paragraph of placeholder copy each.
-- [ ] No fake testimonials, no invented customer logos, no fabricated user counts or metrics anywhere on the page. The only copy in the page is the product's own value proposition, feature descriptions, prices, and FAQ answers.
-- [ ] Responsive: at 640px width, nav collapses to logo + CTA only, feature grid is 1-column, pricing stacks, FAQ is full width, CTA form stacks.
-- [ ] Lighthouse a11y score ≥ 95 on `/`: every interactive element has a focus ring, all images/icons have `aria-hidden` where decorative, form has a visible label, color contrast meets WCAG AA.
+The build is "done and working" when every item below is true:
 
-FILES: ["package.json","next.config.js","tsconfig.json","tailwind.config.ts","postcss.config.js","app/globals.css","app/layout.tsx","app/page.tsx","app/privacy/page.tsx","app/terms/page.tsx","app/api/waitlist/route.ts","components/Nav.tsx","components/Hero.tsx","components/HowItWorks.tsx","components/Features.tsx","components/FeatureCard.tsx","components/icons.tsx","components/Pricing.tsx","components/PricingCard.tsx","components/FAQ.tsx","components/FAQItem.tsx","components/CTA.tsx","components/Footer.tsx","components/Logo.tsx","components/Section.tsx","public/favicon.ico"]# Uncle Inc. — Build Plan
+- [ ] `npm install && npm run dev` starts the site on `http://localhost:3000` with no console errors and no TypeScript errors.
+- [ ] `npm run build` completes successfully (production build).
+- [ ] `app/page.tsx` renders the seven sections in order: Nav, Hero, Features, Pricing, FAQ, CTA, Footer.
+- [ ] Tailwind config defines `navy` (`#1A3A5C`), `cobalt` (`#4A90D9`), `accent` (`#22C55E`), `ink`, and `canvas` and these are used in components — no raw hex strings in JSX.
+- [ ] `app/layout.tsx` loads Inter and IBM Plex Sans via `next/font/google` and applies them via CSS variables; heading text is in Inter, body in IBM Plex Sans (visually verifiable).
+- [ ] The Hero H1 reads exactly "Validate Your Startup Idea Before You Build It" and the subhead references the AI-assisted MVP platform.
+- [ ] Hero has exactly two CTA buttons: a primary accent "Join the Waitlist" (anchors to `#waitlist`) and a secondary outlined "See How It Works" (anchors to `#features`).
+- [ ] Features section has exactly six cards with the specified titles in the specified order, each with a lucide icon, a one-line description, and the navy/cobalt/white treatment.
+- [ ] Pricing section has exactly three tiers with the exact names, prices, and "MOST POPULAR" treatment on Builder.
+- [ ] FAQ section has exactly six items, each expandable, with the specified questions and answers.
+- [ ] CTA section is `bg-navy`, has an email input, a "Join Waitlist" submit button, and confirmation behavior: submitting swaps the form for a success message; invalid email shows a red border + helper text; server error keeps the form and shows a "Try again" hint.
+- [ ] `/api/waitlist` returns 200 `{ ok: true }` for a valid email in fallback log-only mode (no Supabase env vars) and 400 for an invalid email.
+- [ ] Nav is sticky at the top, has the wordmark, the three in-page links, and a "Join Waitlist" button. On `< md` viewports, a hamburger opens a full-screen sheet with the same items.
+- [ ] Footer shows "© 2026 Uncle Inc." and Privacy / Terms anchor links.
+- [ ] There are **no** fake testimonials, no customer logos, no download counts, no "as seen in" press lines, no star ratings anywhere on the page.
+- [ ] The site is responsive at 360px, 768px, 1024px, and 1440px widths with no horizontal scroll.
+- [ ] Lighthouse Best Practices score ≥ 90 on a production build (no broken images, valid `<html lang>`, `<button>` for buttons, `<a>` for links, sufficient color contrast on navy/white and accent/white pairs).
+- [ ] Focus rings are visible on keyboard tab through all interactive elements.
+- [ ] `prefers-reduced-motion: reduce` disables smooth scroll (handled in `globals.css` with `@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }`).
+
+FILES: ["package.json", "next.config.js", "tsconfig.json", "tailwind.config.ts", "postcss.config.js", "app/globals.css", "app/layout.tsx", "app/page.tsx", "app/api/waitlist/route.ts", "components/Nav.tsx", "components/Hero.tsx", "components/Features.tsx", "components/Pricing.tsx", "components/FAQ.tsx", "components/CTA.tsx", "components/Footer.tsx", "lib/supabase.ts", "lib/validate.ts", ".env.example", "README.md"]# Uncle Inc. — Build Plan
 
 ## 1. PRODUCT
 
-Uncle Inc. is a single-route marketing landing page for an AI-assisted MVP development platform. The page does one job: convert pre-launch founders who are sitting on an unvalidated idea into waitlist signups. It positions Uncle Inc. as the operator that turns a rough hypothesis into a tested, instrumented MVP without forcing the founder to write code or run a validation sprint by hand. The core value communicated is "validate before you build" — six capability pillars (AI prototyping, user testing, launch analytics, guided validation, no-code, real-data iteration), three transparent pricing tiers, six objection-handling FAQs, and a single email-capture CTA at the bottom. Pain solved: first-time founders waste months building the wrong thing; Uncle Inc. collapses the build→measure→learn loop into a guided, AI-assisted flow so they can confirm demand before sinking serious time and money.
+Uncle Inc. is a single Next.js 14 marketing landing page that introduces an AI-assisted MVP validation platform for first-time and early-stage startup founders. The page exists to convert qualified visitors — founders stuck between idea and build — into a pre-launch waitlist by demonstrating the platform's six core capabilities, transparent pricing, and answering objections in an FAQ. The specific pain addressed is the founder who has an idea but cannot afford the weeks of engineering, the cost of a dev agency, or the risk of building something nobody wants: Uncle promises a no-code path from idea to testable, measurable MVP in days. The marketing site itself must therefore feel decisive, technical, and trustworthy — Crisp Operator archetype — not playful or generic-SaaS.
 
 ## 2. WHO IT'S FOR
 
-The ICP is a non-technical or lightly technical first-time founder, typically 25–45, working on a side project or early-stage startup, who has an idea but no team, no design/dev capacity, and no validated signal that anyone actually wants what they plan to build. They are time-poor, skeptical of vague AI hype, and want concrete answers: what does it do, what does it cost, do I have to code, how do I know it works. The product and tone are shaped accordingly: zero jargon, feature cards named after concrete outcomes (not buzzwords), prices shown as plain dollars, no invented social proof, no fake logos. Tone is calm, confident, "Crisp Operator" — the page reads like a competent technical cofounder, not a growth-hacker. The hero is one sentence, the CTAs are two specific actions, the FAQ answers real objections a skeptic would type into Google.
+The ICP is the **non-technical first-time founder** (and the solo technical founder time-poor on design) who has validated the problem informally but has not yet shipped. They are 25–45, read Y Combinator essays, lurk on r/startups, have a Notion doc and maybe a Figma file, and have either failed to launch or watched a previous MVP crater from lack of signal. They are skeptical of vague AI hype and allergic to fake social proof — so the site copy must show concrete features, not invented logos or made-up user counts. This shapes the product:
+
+- **Tone:** confident, plain-spoken, no exclamation marks, no "supercharge your workflow."
+- **Density:** moderate — six feature cards and three pricing tiers is enough; padding the page with extra sections dilutes intent.
+- **Single primary conversion:** Join Waitlist. One hero CTA, one closing CTA, and a tertiary "See How It Works" link. No secondary funnels.
+- **No invented customers:** zero testimonials, zero "trusted by," zero download counts. The brand-board wireframes from the prior session confirm a Crisp Operator aesthetic, so the page reads like a product page from a real company at seed stage, not a YC startup with vapor claims.
 
 ## 3. LOOK & FEEL
 
 **Visual system**
-- Vibe/positioning: Crisp Operator. Clean enterprise UI, precise grids, confident whitespace. No gradients, no glassmorphism, no neon. Solid colors, hairline borders, tight type.
-- Color palette (Tailwind theme):
-  - `navy` #1A3A5C — primary, used for dark sections, footer, dark CTA band, heading accents
-  - `cobalt` #4A90D9 — interactive accent, links, primary buttons on light backgrounds
-  - `accent` #22C55E — single-purpose: "popular" badge, success micro-copy, the underline mark on the wordmark logo, and the "in stock / live" dot on the CTA
-  - `bg` #F8FAFC — page background
-  - `surface` #FFFFFF — cards
-  - `ink` #0F172A — body/heading text
-  - `muted` #64748B — secondary text
-  - `border` #E2E8F0 — 1px hairlines
-- Typography: Inter for h1–h4, IBM Plex Sans for body, paragraphs, buttons, FAQ answers. Source Code Pro only if a code snippet appears (it doesn't on this page). Weights: 400 body, 500 subheads, 600 h2, 700 h1.
-- Spacing/layout: 4px base unit, 1280px max container, 24px section vertical padding (96px on desktop), 4px border-radius (deliberately tight — enterprise feel, not consumer playful).
-- Components used: sticky top nav, two button variants (`primary` cobalt filled, `secondary` navy outline on light / white outline on dark), input with label, feature card, pricing card (with optional "popular" badge), accordion FAQ row, dark CTA band, footer.
-- Iconography: inline SVG, 24px, 1.5px stroke, currentColor. One icon per feature card, monochromatic cobalt. No icon font.
-- Imagery: none on this page. The product is a platform; an honest pre-launch landing page uses type, color, and structure to carry the message. No stock photos, no mockup screenshots of a product that does not exist yet.
-- Motion: minimal. 150ms ease-out on hover for buttons and links. FAQ rows animate height on open/close (200ms ease-in-out, 180px max). No scroll animations, no parallax.
 
-**Per-screen layout (this is a single page, sections top-to-bottom)**
+- **Archetype:** Crisp Operator — confident whitespace, precise grid, restrained color, type-led hierarchy. No gradients on backgrounds, no glassmorphism, no oversized illustrations.
+- **Color palette (in `tailwind.config.ts`):**
+  - `navy` `#1A3A5C` — primary, used for the CTA dark section, footer, headings on light.
+  - `cobalt` `#4A90D9` — secondary accent, used for the wordmark "Inc." dot, links, the "popular" pricing border, focus rings.
+  - `accent` `#22C55E` — single-action accent, used for the Join Waitlist button, the "MOST POPULAR" pill, the check icons in pricing, the active FAQ chevron.
+  - `ink` `#0F172A` — body text on light.
+  - `slate-500` `#64748B` — secondary text.
+  - `border` `#E2E8F0` — dividers, card borders.
+  - `surface` `#FFFFFF` — cards.
+  - `canvas` `#F8FAFC` — page background sections (alternating with white).
+- **Typography:**
+  - Headings: **Inter**, weights 600/700, tight tracking (`-0.02em` on h1, `-0.01em` on h2/h3).
+  - Body: **IBM Plex Sans**, weight 400/500, `leading-relaxed` (1.625) for body, 1.5 for UI.
+  - Numeric/feature labels: Inter 600 uppercase, `text-xs tracking-widest text-slate-500` for the "FEATURES" eyebrow.
+  - Loaded via `next/font/google` in `app/layout.tsx` with `subsets: ['latin']` and CSS variables `--font-inter` and `--font-plex`.
+- **Spacing & layout:** 4px base unit. Section vertical rhythm `py-20 md:py-28`. Container `max-w-7xl mx-auto px-6 lg:px-8`. 12-column grid on desktop, single column on mobile. Cards use `rounded-md` (4px), `border border-slate-200`, `bg-white`, `p-8`.
+- **Iconography:** lucide-react stroke icons only, 1.75px stroke, 20px default, 24px in feature cards, 16px inline. No emoji. The switchboard motif from the prior design session is reserved for the wordmark and a small inline glyph — not used decoratively.
+- **Imagery:** none on the marketing page. The brand is carried by typography, color, and the wordmark. (No hero illustration, no stock photo — this signals technical seriousness, not consumer friendliness.)
+- **Motion:** minimal. `transition-colors` on buttons and links, `transition-transform` on FAQ chevron rotation, `transition-all duration-200` on card hover (subtle `hover:border-cobalt/40 hover:-translate-y-0.5`). No scroll animations, no parallax, no auto-play anything.
 
-1. **Nav (sticky, 64px)**
-   - Left: wordmark "Uncle" in Inter 700 navy + a small green (#22C55E) underline glyph after the word; ".inc" implied by context.
-   - Center (md+): three text links — Features, Pricing, FAQ — Inter 500, 14px, muted, hover→ink.
-   - Right: "Join Waitlist" button, secondary variant (navy outline on light bg), 36px tall.
+**Screens (single page, sections top → bottom):**
 
-2. **Hero (96px top padding, 96px bottom)**
-   - Eyebrow chip: small pill, navy/10 bg, navy text, 12px, "AI-assisted MVP platform".
-   - H1: "Validate Your Startup Idea Before You Build It" — Inter 700, 48px mobile / 64px desktop, ink, max-width 820px, centered.
-   - Subtext: one paragraph, IBM Plex Sans 400, 18px, muted, max-width 640px, centered. Wording: "Uncle Inc. turns your idea into a working, testable MVP in days — with built-in user research, launch analytics, and AI-guided iteration. No code, no guesswork, no six-month build."
-   - Two CTAs, side-by-side, centered, 48px tall:
-     - Primary cobalt: "Start a Free Project"
-     - Secondary navy outline: "See How It Works"
-   - Below CTAs, 14px muted line: "Free to start · No credit card required". The small green dot (#22C55E) sits to the left of this line as a live/available signal.
-
-3. **Features (96px vertical padding)**
-   - Section header: H2 "Everything you need to go from idea to validated MVP" + muted subhead "Six tools, one workspace, zero engineering required."
-   - Grid: 3 columns desktop, 2 tablet, 1 mobile, 24px gap.
-   - 6 cards, each: white surface, 1px border, 16px padding, 4px radius.
-     - Top: 24px cobalt SVG icon, 40px from top of card.
-     - Title: Inter 600, 18px, ink.
-     - Body: IBM Plex Sans 400, 15px, muted, 2–3 lines.
-   - Card order and exact titles/copy:
-     1. **AI Rapid Prototyping** — "Describe your idea in plain English. Get a clickable, branded prototype in minutes, not weeks."
-     2. **Built-in User Testing** — "Recruit real testers from your audience, run guided tasks, and capture session recordings automatically."
-     3. **Launch Analytics** — "A live dashboard for signups, activation, and retention from the moment your MVP is live."
-     4. **Guided Validation** — "Step-by-step playbooks built on the Lean Startup method, adapted to your idea as you progress."
-     5. **No Code Required** — "Build, ship, and iterate visually. Every change you make is reviewed by AI for clarity and conversion."
-     6. **Iterate with Real Data** — "See what's working, what's not, and what to build next — backed by real user behavior, not opinions."
-
-4. **Pricing (96px vertical padding, light bg section — white surface)**
-   - H2: "Simple, founder-friendly pricing" + muted subhead "Start free. Upgrade only when you're ready to launch."
-   - 3 cards in a row (stacks on mobile), 24px gap. Middle card is "popular" — adds the green badge ribbon top-center, a 2px cobalt border, and a subtle shadow (0 1px 2px rgba(15,23,42,0.06)).
-   - Card structure (every card):
-     - Tier name (Inter 600, 20px)
-     - One-line description (muted, 14px)
-     - Price block: "$0" or "$29" or "$79" in Inter 700, 48px, ink, with "/mo" in muted 16px
-     - CTA button (full-width, 44px): "Get Started" / "Start Building" / "Start Team Trial". Middle card's button is primary cobalt; outer cards are secondary navy outline.
-     - 5 feature bullets, IBM Plex Sans 15px, with a small cobalt check SVG.
-   - Exact tiers and bullets:
-     - **Explorer** — $0 — "For founders validating their first idea."
-       - 1 active project
-       - AI prototyping (10 generations / mo)
-       - Up to 25 tester sessions
-       - Basic launch analytics
-       - Community support
-     - **Builder** — $29/mo — "For solo founders ready to launch and learn." [Popular]
-       - Unlimited projects
-       - Unlimited AI prototyping
-       - Up to 500 tester sessions
-       - Full launch analytics dashboard
-       - Guided validation playbooks
-     - **Team** — $79/mo — "For small teams running multiple experiments."
-       - Everything in Builder
-       - 5 team seats included
-       - Custom branding on prototypes
-       - Priority support (24h response)
-       - Export raw analytics data
-
-5. **FAQ (96px vertical padding)**
-   - H2: "Frequently asked questions" + muted subhead "Still on the fence? Here's what founders ask us most."
-   - 6 accordion rows, 1px border-bottom between rows, 0 top border, white background, max-width 820px centered.
-   - Row anatomy: question on the left (Inter 500, 17px, ink), plus/minus toggle on the right (cobalt), 20px vertical padding. Expanded: answer slides open in IBM Plex Sans 15px muted, 16px bottom padding.
-   - Questions and answers (exact):
-     1. **Do I need to know how to code?** — "No. Uncle Inc. is a visual, AI-assisted platform. If you can describe your idea, you can build a working MVP on Uncle."
-     2. **How is this different from a no-code website builder?** — "Website builders help you publish pages. Uncle Inc. helps you validate a product idea — with built-in user testing, analytics, and guided playbooks that adapt to what you're building."
-     3. **What does "AI-assisted" actually mean here?** — "Our AI drafts your prototype from a short description, reviews every change you make for clarity, and recommends the next validation step based on the data your MVP collects."
-     4. **Can I export my project or data?** — "Yes. Team plans include raw data export. All paid plans can export the project itself as a static site or a documented spec you can hand to developers later."
-     5. **How long does it take to get a prototype live?** — "Most founders have a clickable prototype within an hour of signing up, and a testable MVP in their first week."
-     6. **When will Uncle Inc. be generally available?** — "We're in private beta. Join the waitlist and you'll get an invite as soon as a spot opens — usually within two weeks."
-
-6. **CTA band (full-width, navy #1A3A5C background, 96px vertical padding)**
-   - H2 white: "Be first in line when we open access" + muted-cobalt subhead "Join the waitlist for early access, founder pricing, and a direct line to our team."
-   - Form, centered, single row on desktop (email input + button), stacked on mobile.
-     - Email input: 360px wide desktop, 48px tall, white surface, 4px radius, IBM Plex Sans 15px, placeholder "you@startup.com", 1px border #FFFFFF/20.
-     - Button: primary variant but white surface with navy text — "Join Waitlist", 48px tall, 8px left margin on desktop.
-   - Below the form, 13px white/70 microcopy: "We'll only email you about access. No spam, ever." A small green dot sits to the left.
-
-7. **Footer (white surface, 1px top border, 48px vertical padding)**
-   - Left: "© 2026 Uncle Inc. All rights reserved." in IBM Plex Sans 14px muted.
-   - Right: two text links, "Privacy" and "Terms", 14px muted, hover→ink.
+1. **Nav (sticky, `sticky top-0 z-50`, white with `border-b border-slate-200`):** height 64px. Left: wordmark "Uncle Inc." (Inter 600, navy, with a 6px cobalt dot as the period of "Inc"). Right on desktop: three text links — Features, Pricing, FAQ — in `text-sm text-ink/80 hover:text-navy`, 32px gap. Then a primary button "Join Waitlist" — `bg-accent text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-accent/90`. On mobile: links collapse into a hamburger that opens a full-screen sheet with the same three links stacked and the CTA at the bottom.
+2. **Hero (`bg-white`, `pt-28 pb-24 md:pt-36 md:pb-32`):** Centered on desktop, max-width 56rem.
+   - Eyebrow: `text-xs font-semibold tracking-widest text-cobalt uppercase` reading "FOR FIRST-TIME FOUNDERS".
+   - H1: Inter 700, `text-5xl md:text-6xl lg:text-7xl`, `text-navy`, `tracking-tight`, `leading-[1.05]`: "Validate Your Startup Idea Before You Build It."
+   - Subhead: IBM Plex Sans 400, `text-lg md:text-xl text-slate-500`, `max-w-2xl mx-auto`, `mt-6`: "Uncle turns your idea into a testable MVP in days, not months. Prototype with AI, run real user tests, and decide what to build next — without writing code or hiring a team."
+   - CTA row (`mt-10`): two buttons side-by-side, centered, flex-wrap.
+     - Primary: `bg-accent text-white px-6 py-3.5 rounded-md text-base font-semibold hover:bg-accent/90` → "Join the Waitlist".
+     - Secondary: `border border-navy/20 text-navy bg-white px-6 py-3.5 rounded-md text-base font-semibold hover:border-navy hover:bg-navy/5` → "See How It Works" (anchors to `#features`).
+   - Below CTAs: `mt-5` a single line `text-sm text-slate-500` — "No credit card. Early access invites roll out weekly." Honest, no fake urgency.
+3. **Features (`bg-canvas`, `py-20 md:py-28`, id `features`):**
+   - Section header centered, `max-w-2xl mx-auto text-center`: eyebrow `text-xs font-semibold tracking-widest text-cobalt uppercase` "WHAT YOU GET", h2 Inter 600 `text-3xl md:text-4xl text-navy` "Everything you need to go from idea to evidence.", sub `mt-3 text-slate-500`.
+   - Grid: `mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6`.
+   - Each card: `bg-white border border-slate-200 rounded-md p-8 hover:border-cobalt/40 transition-all duration-200`. Top: a 44×44 square `bg-navy/5 rounded-md` containing a lucide icon in `text-cobalt`. Then `mt-5` Inter 600 `text-lg text-navy` title, `mt-2` IBM Plex Sans `text-sm text-slate-500 leading-relaxed` two-line description. Six cards in this exact order, each with a distinct lucide icon:
+     1. **AI Rapid Prototyping** — `Wand2` — "Describe your idea. Uncle generates a working prototype you can share the same day."
+     2. **Built-in User Testing** — `Users` — "Recruit testers from your network or ours. Capture sessions, surveys, and qualitative feedback in one place."
+     3. **Launch Analytics** — `BarChart3` — "See where users drop off, what they click, and what they ignore — from day one."
+     4. **Guided Validation** — `Compass` — "Follow a step-by-step playbook that tells you what to test, when, and what counts as a signal."
+     5. **No Code Required** — `Blocks` — "Build, edit, and ship without touching a codebase. Founders ship. Engineers polish later."
+     6. **Iterate with Real Data** — `RefreshCw` — "Replace gut feel with usage data. Decide the next sprint from what real people actually did."
+4. **Pricing (`bg-white`, `py-20 md:py-28`, id `pricing`):**
+   - Same header pattern: eyebrow "PRICING", h2 "Simple plans. Cancel anytime.", sub.
+   - Grid: `mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto`. Each tier card `rounded-md p-8 flex flex-col`. The middle ("Builder") card gets `border-2 border-cobalt` and a `MOST POPULAR` pill (`absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full`) and the card uses `relative`.
+   - Card anatomy top→bottom: tier name (Inter 600 `text-base text-slate-500 uppercase tracking-widest`), then price block — `mt-4` Inter 700 `text-5xl text-navy` for the number, `text-base text-slate-500` for "/mo" (or "Free" for Explorer), then a one-line description `mt-2 text-sm text-slate-500`, then a hairline `my-6 border-t border-slate-200`, then a 5-item feature list where each row is a flex with a 16px `Check` lucide icon in `text-accent` and `text-sm text-ink` label, then a button pushed to the bottom with `mt-auto pt-8`.
+   - Tiers (kept exactly as the goal specified):
+     - **Explorer — Free**: 1 project, AI prototyping (limited runs), 1 active user test, 7-day analytics retention, community support. Button: secondary style "Start Free".
+     - **Builder — $29/mo (MOST POPULAR)**: 5 projects, unlimited AI prototyping, 10 active user tests, 90-day analytics, email support, guided validation playbooks. Button: accent primary "Join Waitlist".
+     - **Team — $79/mo**: Everything in Builder + unlimited projects, unlimited user tests, 1-year analytics, 3 seats included, priority support, custom domains. Button: navy primary "Join Waitlist".
+   - Footnote under grid: `mt-8 text-center text-sm text-slate-500` — "Prices in USD. All plans include a 14-day refund window after launch."
+5. **FAQ (`bg-canvas`, `py-20 md:py-28`, id `faq`):**
+   - Header: eyebrow "FAQ", h2 "Questions, answered."
+   - Container: `max-w-3xl mx-auto mt-12`. List of 6 items, each a row separated by `border-b border-slate-200`. Use `<details>` + `<summary>` for native accessibility, with a custom-styled chevron `Plus` from lucide that rotates 45° when open. Summary is `flex items-center justify-between py-5 cursor-pointer list-none` (with `::-webkit-details-marker { display: none }` CSS reset), question text in Inter 600 `text-base md:text-lg text-navy`, answer in `mt-3 pb-5 text-slate-500 text-sm md:text-base leading-relaxed`. Use `<details name="faq">` so only one is open at a time on browsers that support exclusive accordion (graceful fallback to multi-open elsewhere).
+   - The 6 questions and answers:
+     1. "What exactly is Uncle?" — "Uncle is an AI-assisted platform that helps founders turn an idea into a testable MVP without writing code. You describe the problem, Uncle helps you build a prototype, recruit testers, collect feedback, and decide what to ship next."
+     2. "Do I need to know how to code?" — "No. Uncle is built for non-technical founders. If you can write a clear problem statement, you can use Uncle. Engineers can still get involved later through exports and APIs."
+     3. "How is this different from a no-code tool like Bubble or Webflow?" — "Those tools help you build. Uncle helps you decide whether to build. The focus is on validation — prototypes, user tests, and real usage data — before you commit to a full product."
+     4. "What does 'AI-assisted' actually mean here?" — "Uncle uses AI to draft prototypes from your problem description, suggest test scripts, summarize user feedback, and highlight patterns in your analytics. You stay in control of every decision."
+     5. "When can I start using it?" — "Uncle is in private beta. Joining the waitlist puts you in line for an invite — early access rolls out in small batches so we can give every founder real attention."
+     6. "Can I cancel or change plans later?" — "Yes. You can upgrade, downgrade, or cancel at any time. After public launch, every plan includes a 14-day refund window."
+6. **CTA (`bg-navy`, `py-20 md:py-28`):**
+   - Centered, `max-w-2xl mx-auto text-center`. H2 Inter 600 `text-3xl md:text-4xl text-white` "Ready to stop guessing?" (honest — not "Ready to launch in 30 seconds?"). Sub `mt-4 text-base md:text-lg text-white/70` "Join the Uncle waitlist. We'll email you when it's your turn."
+   - Form `mt-8`: a single horizontal flex on desktop, stacked on mobile. `flex flex-col sm:flex-row gap-3 max-w-md mx-auto`.
+     - Email input: `flex-1 px-4 py-3.5 rounded-md bg-white text-ink placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-accent`, `type="email" required`, placeholder "you@startup.com".
+     - Submit: `bg-accent text-white px-6 py-3.5 rounded-md font-semibold hover:bg-accent/90` "Join Waitlist".
+   - Microcopy `mt-4 text-sm text-white/60` "We email sparingly. Unsubscribe in one click."
+   - On submit, the form posts to `/api/waitlist` (POST) which returns `{ ok: true }`; the client swaps the form for a confirmation `<p class="text-white">You're on the list. We'll be in touch.</p>` and persists nothing in localStorage (single-use confirmation only).
+7. **Footer (`bg-navy border-t border-white/10`, `py-10`):**
+   - `max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4`.
+   - Left: wordmark "Uncle Inc." in white, Inter 600.
+   - Right: link row `flex gap-6 text-sm text-white/70 hover:text-white` — "Privacy" (anchor to `#` — no real page yet, honest placeholder), "Terms" (same), and a `text-white/50` "© 2026 Uncle Inc.".
+   - On mobile: stacked, centered.
 
 ## 4. USER FLOWS
 
-**Primary flow: visitor → waitlist signup**
-1. Land on `/` (this is the only route).
-2. Read hero, click "Start a Free Project" → anchors to `#waitlist` (the CTA band section). No real account creation on this page; the button scrolls, it does not open a modal that pretends to sign them up.
-3. Alternative path: read Features → Pricing → FAQ, then click "Join Waitlist" in the nav or scroll to the bottom band.
-4. In the email input, type address, click "Join Waitlist".
-5. Submit state: button shows "Joining…" (disabled, same dimensions to prevent layout shift), input becomes readonly. On success: input is replaced inline with a success line "✓ You're on the list. We'll be in touch." in white text with a small green dot. On error: input border turns red-ish (use #EF4444), helper text below says "Something went wrong. Try again."
-6. No persistence requirement is in the spec (this is a static marketing page), so the form is a client component that calls a `fetch('/api/waitlist', { method: 'POST', body: JSON.stringify({ email }) })` endpoint. If the API route is not implemented, the form should still function as a no-op success in dev (return `{ ok: true }` after a short delay) so the page is honest and complete. The plan does not include a database for this landing page — it is a single-route marketing site.
+The site is a single-page marketing surface, so flows are short and explicit:
 
-**Secondary flow: visitor → pricing → waitlist**
-1. Visitor reads pricing.
-2. Clicks the middle "Builder" card's "Start Building" CTA.
-3. Same scroll-to-`#waitlist` behavior as the hero CTA. All "Get Started" / "Start Building" / "Start Team Trial" buttons anchor to `#waitlist`. The free and team CTAs are deliberately the same target — there is no checkout on this page.
+**Flow A — Primary conversion (Join Waitlist)**
+1. Visitor lands from any source → sees Hero with H1, subhead, and two CTAs.
+2. Scrolls (or clicks "See How It Works" which smooth-scrolls to `#features`).
+3. Reviews six feature cards → scrolls to Pricing → reviews three tiers.
+4. Hovers FAQ items, expands one or two to check objection handling.
+5. Reaches dark CTA section. Types email → clicks "Join Waitlist".
+6. Client-side: `e.preventDefault()`, POST `/api/waitlist` with `{ email }`.
+7. On 200: form is replaced with confirmation text; email input is cleared from DOM.
+8. On 400 (validation): input border turns red via `aria-invalid` + `border-red-400`, helper text "Enter a valid email" appears under the input.
+9. On 500/network: form stays, button text becomes "Try again", and a small `<p class="text-amber-300 text-sm mt-2">Something went wrong. Try again in a moment.</p>` appears.
 
-**FAQ flow**
-- Click any FAQ row → row expands, plus icon rotates to minus, answer fades in. Click again to collapse. Each row independent (multiple can be open).
+States: idle → submitting (button disabled, label "Joining…", `opacity-70 cursor-not-allowed`) → success | error.
 
-**States (every interactive element)**
-- Buttons: default, hover (slight darken, 150ms), focus-visible (2px cobalt ring, 2px offset), disabled (40% opacity, cursor not-allowed).
-- Nav links: default muted, hover ink, focus-visible cobalt underline 2px.
-- FAQ rows: default closed, hover background `bg` (#F8FAFC), open white surface with cobalt left-border 2px.
-- Email input: default white with 1px border `border`, focus 1px cobalt + 2px cobalt/20 ring, error 1px #EF4444, success hidden (replaced by message).
-- Mobile (≤640px): nav collapses to logo + "Join Waitlist" button only; hero text 36px; features grid 1-col; pricing 1-col stacked with "popular" card still visually marked; FAQ full width; CTA form stacked.
+**Flow B — Sticky nav shortcut**
+1. User on any section clicks "Pricing" in the nav → smooth scroll to `#pricing` (using `scroll-behavior: smooth` on `html` and `scroll-margin-top: 80px` on each section to clear the sticky nav).
+2. Same for "Features" → `#features` and "FAQ" → `#faq`.
 
-## 5. PAGES/ROUTES
+**Flow C — Mobile menu**
+1. On `< md`, hamburger button appears top-right.
+2. Tap → full-height fixed sheet slides in (`fixed inset-0 bg-white z-50`), nav links stacked vertically with large tap targets (py-4), close button top-right, "Join Waitlist" button at bottom (`mt-auto`).
+3. Tap a link → close sheet + smooth-scroll to anchor.
 
-| Route | Purpose | Layout | Main UI |
-|---|---|---|---|
-| `/` | The marketing landing page. The entire product for this build. | Single page, sections stacked: Nav → Hero → Features → Pricing → FAQ → CTA → Footer | All components |
-| `/api/waitlist` (POST) | Accepts `{ email: string }`. Validates email format, returns `{ ok: true }` after a short artificial delay. No DB write (out of scope for this build; documented as a future integration). Returns 400 on invalid email. | API route, JSON | — |
-| `/privacy` | Stub page. 2 sections of placeholder copy, same nav and footer. Required because the footer links to it. | Reuses Nav + Footer | "Privacy Policy" h1 + 1 paragraph + "Last updated: 2026" |
-| `/terms` | Stub page. Same as `/privacy` but with "Terms of Service". | Reuses Nav + Footer | "Terms of Service" h1 + 1 paragraph + "Last updated: 2026" |
+**Flow D — FAQ accordion**
+1. Tap summary → `<details>` toggles open. Chevron rotates 45°. Only one open at a time via shared `name="faq"` attribute (with progressive enhancement).
+2. On mobile, tapping a link in the sticky nav that resolves to the FAQ section will auto-close the mobile menu first.
 
-No other routes. No dashboard, no auth, no `/app/*` — the goal is a marketing landing page, and the spec is explicit about that scope. The plan acknowledges in the CTA band that full product access is gated by the waitlist.
+## 5. PAGES / ROUTES
+
+| Route | Purpose | Layout & main UI elements |
+|---|---|---|
+| `/` | The marketing landing page. The only user-facing page. | `<Nav />` sticky → `<Hero />` → `<Features />` → `<Pricing />` → `<FAQ />` → `<CTA />` → `<Footer />`. Sectioned by id for in-page anchors. |
+| `/api/waitlist` | POST endpoint to accept waitlist emails. | Route handler: validates `email` (zod or simple regex), inserts into Supabase table `waitlist` (columns: `id`, `email`, `created_at`), returns `{ ok: true }` on success or `{ ok: false, error }` on failure. If Supabase env vars are not configured, falls back to logging the email to the server console and returning `{ ok: true }` so the UI works in any environment — the form must never feel broken to a visitor. |
+| `/_not-used` | — | No dashboard, no /login, no /signup, no /app. The product goal is explicitly a marketing landing page; building an authenticated app is out of scope and would be vapor. |
 
 ## 6. CORE FEATURES
 
-1. **Sticky navigation with anchor links and CTA**
-   - What it does: stays at the top of the viewport on scroll, provides anchor navigation to Features / Pricing / FAQ sections, and surfaces a "Join Waitlist" CTA.
-   - How: `position: sticky; top: 0` on a `<nav>`. `scroll-behavior: smooth` set on `html` in `globals.css` for anchor jumps. Mobile: hides center links, shows logo + CTA only.
+These are the features the marketing page *describes and demonstrates*. None of them require a live backend to be honest on the page — they describe what the platform does, not what this site does.
 
-2. **Hero with two CTAs and anchor scroll**
-   - What it does: communicates the value prop in one headline and routes the user to two distinct next steps.
-   - How: h1 + subtext + two buttons. Primary button (`#waitlist`), secondary button (`#how-it-works` — a small in-page "how it works" explainer block inserted between Hero and Features, see below). Both use `<a href="#…">`.
-
-3. **"How it works" explainer (3 steps)**
-   - What it does: gives the visitor a 30-second mental model of the product flow so the Features grid has context.
-   - How: a single horizontal row of 3 numbered steps with cobalt numerals: 1. Describe your idea, 2. Get a clickable prototype, 3. Test with real users and iterate. Each step has a 1-line IBM Plex Sans 14px muted description. This is the anchor target for the secondary CTA "See How It Works" and is required to make that second CTA honest (a button that scrolls to nothing is a dead UI).
-
-4. **Features grid (6 cards)**
-   - What it does: enumerates concrete capabilities, each with a distinct icon and 2–3 line description.
-   - How: CSS grid 1/2/3 cols. Each card is a `<div>` with icon + h3 + p. Icons are inline SVG components in a `components/icons.tsx` file.
-
-5. **Pricing (3 tiers, middle marked popular)**
-   - What it does: presents transparent monthly pricing with explicit feature bullets.
-   - How: 3 flex/grid cards. Middle card adds `border-2 border-cobalt` + the green "Popular" badge absolutely positioned at the top. All CTAs anchor to `#waitlist`.
-
-6. **FAQ accordion (6 items)**
-   - What it does: answers the six most common pre-signup questions and reduces support burden.
-   - How: 6 `<details>` / `<summary>` elements (native HTML, accessible by default, no JS library required). Styled with Tailwind to match the design system. Only one needs to be open at a time — handled by toggling siblings' `open` attribute on `toggle` event using a small client component (`'use client'`) wrapper.
-
-7. **Waitlist email capture**
-   - What it does: collects an email and gives the user clear success/error feedback.
-   - How: client component with controlled input + button. On submit, `POST /api/waitlist` with `{ email }`. Button disabled during request. On `ok: true`, swap input area for a success line. On error, show inline error.
-
-8. **Footer with legal links**
-   - What it does: provides copyright and routes to stub Privacy and Terms pages.
-   - How: flex row, left text + right links.
-
-9. **Stub Privacy and Terms pages**
-   - What it does: gives the footer links a real destination with honest placeholder copy.
-   - How: minimal pages reusing `<Nav />` and `<Footer />`, one paragraph of neutral placeholder text noting that final policies will be published before general availability.
+1. **AI Rapid Prototyping** (described in card 1) — Uncle generates a working prototype from a problem description. On the marketing page, this is communicated by the card copy, the H1 promise, and the `Wand2` icon. No interactive demo on the marketing page (would feel gimmicky and require backend).
+2. **Built-in User Testing** (card 2) — Capture sessions, surveys, and feedback in one place. Card-only; no in-page demo.
+3. **Launch Analytics** (card 3) — Drop-off, click, and ignore reporting from day one. Card-only.
+4. **Guided Validation** (card 4) — Step-by-step playbook telling founders what to test, when, and what counts as signal. Card-only.
+5. **No Code Required** (card 5) — Build, edit, and ship without a codebase. Reinforced in the Hero subhead.
+6. **Iterate with Real Data** (card 6) — Replace gut feel with usage data. Card-only.
+7. **Pricing transparency** (Pricing section) — three concrete tiers, real prices, real per-tier limits, one "Most Popular" call-out. No "Contact us" hidden tier. The middle tier uses a `border-cobalt` outline so the eye lands there; the accent pill above the card labels the choice for skimmers.
+8. **FAQ objection handling** (FAQ section) — six questions covering what it is, who it's for, how it differs from no-code tools, what "AI-assisted" means, when users can start, and billing terms. Each answer is plain, specific, and avoids marketing puffery.
+9. **Email waitlist capture** (CTA section) — single email input, primary action. Posts to `/api/waitlist`. Client-side validation, loading state, success state, error state. Disabled state on submit to prevent double-submit. Honeypot hidden field (`<input name="company" tabIndex={-1} className="hidden" />`) — if filled, the request is silently accepted but not stored.
+10. **Sticky navigation with in-page anchors** — `Features`, `Pricing`, `FAQ` smooth-scroll to their sections. Mobile hamburger sheet.
+11. **Honest copy & no fake social proof** — explicitly no testimonials, no customer logos, no download counts, no "as seen in" press mentions, no star ratings. The brand-board wireframes confirm this is intentional; building these in would be both dishonest and off-archetype.
 
 ## 7. DATA MODEL
 
-This is a static marketing page. The only runtime data is the waitlist submission.
+The only data the marketing site itself owns is the waitlist capture. There is no user account system on this site (out of scope).
 
-**WaitlistSubmission** (logical entity; no persistence in this build)
-- `email: string` — required, validated against a basic RFC-5322 regex client- and server-side.
-- `submittedAt: ISODate` — set server-side in the API route.
-- `source: 'hero' | 'pricing' | 'nav' | 'footer-band'` — derived from a hidden form field or referrer, optional.
+**Table: `waitlist`** (Supabase Postgres)
+| Field | Type | Constraints | Notes |
+|---|---|---|---|
+| `id` | `uuid` | PK, default `gen_random_uuid()` | |
+| `email` | `text` | NOT NULL, UNIQUE, lowercased before insert, regex `^[^\s@]+@[^\s@]+\.[^\s@]+$` | Normalize on insert: `email.trim().toLowerCase()`. On conflict, no-op. |
+| `created_at` | `timestamptz` | NOT NULL, default `now()` | |
+| `source` | `text` | nullable | Optional `referer` header or UTM param. Default `null`. |
 
-The API route validates, returns `{ ok: true }` after a 400ms artificial delay to give realistic loading feedback, and logs to console. There is no database table in this build; the entity is documented so a future iteration can wire the same API route to Supabase or a similar store without changing the contract.
+**Environment variables** (read in the route handler, never exposed to the client):
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `WAITLIST_FALLBACK_LOG_ONLY` (optional, default `true` — if Supabase env vars are missing, log to console and return `ok: true`)
 
-No other entities. No user accounts, no projects, no analytics rows — those are product features behind the waitlist.
+**Client state (transient only):**
+- `formState`: `'idle' | 'submitting' | 'success' | 'error'`
+- `errorMessage`: `string | null`
+
+No localStorage, no cookies, no analytics SDK embedded (intentional — the page is honest about not yet having traffic to measure). A `<Script>` for a privacy-respecting counter (e.g., Plausible) is **not** added; this is a brand decision and out of scope here.
 
 ## 8. AUTH
 
-No auth on this build. The landing page is pre-launch and intentionally has no login surface. The only protected-feeling action is the waitlist email capture, which is unauthenticated by design and does not require a session.
-
-If a future iteration adds `/app/*` routes requiring auth, the plan should default to **Supabase Auth with email + password and magic-link**, both of which work with no external OAuth configuration. Do not add Google/GitHub/social buttons in this build — there is no auth at all, and adding buttons that link to nowhere would be dishonest.
+**No authentication is implemented on this site.** The product goal is a marketing landing page; adding `/login`, `/signup`, or any auth UI would be scope creep and visually inconsistent with the Crisp Operator archetype (which is honest about pre-launch state). The waitlist form is anonymous email capture only. Supabase Auth is **not** wired up here. If a future iteration adds an authenticated dashboard, the recommended path is Supabase Auth with email+password and magic-link (no Google/GitHub buttons until real OAuth credentials are provisioned) — but that is explicitly **not** in this build.
 
 ## 9. FILES
 
-```
-package.json                              # Next.js 14, react, tailwindcss, typescript, autoprefixer, postcss
-next.config.js                            # Minimal Next.js config (reactStrictness on if desired)
-tsconfig.json                             # Standard Next.js TS config with @/* path alias
-tailwind.config.ts                        # Theme tokens: navy/cobalt/accent/ink/muted/border/bg/surface, fonts, 4px spacing
-postcss.config.js                         # tailwindcss + autoprefixer
-app/globals.css                           # Tailwind directives, html { scroll-behavior: smooth }, body bg
-app/layout.tsx                            # Root layout, Inter + IBM Plex Sans via next/font, metadata (title, description, OG)
-app/page.tsx                              # Imports and renders Nav, Hero, HowItWorks, Features, Pricing, FAQ, CTA, Footer
-app/privacy/page.tsx                      # Stub privacy policy page, uses Nav + Footer
-app/terms/page.tsx                        # Stub terms of service page, uses Nav + Footer
-app/api/waitlist/route.ts                 # POST handler: validates email, returns { ok: true } after 400ms
-components/Nav.tsx                        # Sticky nav with wordmark, anchor links, Join Waitlist button
-components/Hero.tsx                       # H1, subtext, two CTAs, free-to-start microcopy
-components/HowItWorks.tsx                 # 3-step explainer, anchor target for Hero's secondary CTA
-components/Features.tsx                   # Section header + 6-card responsive grid
-components/FeatureCard.tsx                # Single feature card (icon + title + body)
-components/icons.tsx                      # 6 inline SVG icon components (24px, 1.5px stroke, currentColor)
-components/Pricing.tsx                    # Section header + 3 tier cards, middle "popular"
-components/PricingCard.tsx                # Single pricing card with optional popular badge
-components/FAQ.tsx                        # Section header + 6 accordion rows
-components/FAQItem.tsx                    # Single FAQ accordion row (uses <details>/<summary>)
-components/CTA.tsx                        # Navy band with email form, client component, calls /api/waitlist
-components/Footer.tsx                     # Copyright + Privacy/Terms links
-components/Logo.tsx                       # Wordmark "Uncle" in Inter 700 navy with green underline glyph
-components/Section.tsx                    # Shared wrapper enforcing 1280px container, 96px vertical padding
-public/favicon.ico                        # Placeholder favicon (can be empty 1x1, or the icon logo)
-```
+Concrete file tree, each with its purpose:
+
+- `package.json` — declares Next.js 14 (`next@14.2.x`), React 18, TypeScript 5, Tailwind 3, PostCSS, Autoprefixer, lucide-react, and (only if using Supabase) `@supabase/supabase-js`. Scripts: `dev`, `build`, `start`, `lint`.
+- `next.config.js` — minimal config; no experimental flags; `reactStrictMode: true`.
+- `tsconfig.json` — Next.js standard, `"strict": true`, `"moduleResolution": "bundler"`, path alias `@/*` → `./*`.
+- `tailwind.config.ts` — extends colors (`navy`, `cobalt`, `accent`, `ink`, `canvas`), `fontFamily` (`sans: ['var(--font-inter)', 'system-ui', 'sans-serif']`, `plex: ['var(--font-plex)', ...]`, `mono: ['var(--font-mono)', ...]` — though mono is loaded for completeness per the design tokens), `borderRadius` defaults, content globs `./app/**/*.{ts,tsx}` and `./components/**/*.{ts,tsx}`.
+- `postcss.config.js` — `tailwindcss` + `autoprefixer`.
+- `app/globals.css` — Tailwind `@tailwind base/components/utilities`; resets `details > summary { list-style: none }` and `details > summary::-webkit-details-marker { display: none }`; sets `html { scroll-behavior: smooth }`; sets `section[id] { scroll-margin-top: 80px }`; defines focus-visible ring utility `@layer utilities { .focus-ring { @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt focus-visible:ring-offset-2 } }`.
+- `app/layout.tsx` — root layout. Loads Inter via `next/font/google` (variable `--font-inter`, weight array `['400','500','600','700']`), IBM Plex Sans via `next/font/google` (variable `--font-plex`, weights `['400','500']`). Sets `metadata`: `title: { default: "Uncle Inc. — Validate Your Startup Idea", template: "%s · Uncle Inc." }`, `description: "An AI-assisted MVP platform that helps founders go from idea to testable prototype — without writing code."`, `openGraph` with title/description/type/URL, `twitter: { card: "summary", title, description }`, `robots: { index: true, follow: true }`. Body: `className={`${inter.variable} ${plex.variable} font-plex bg-white text-ink antialiased`}`. Wraps children in a single `<div className="min-h-screen flex flex-col">` so the footer can stick to the bottom of short viewports.
+- `app/page.tsx` — server component that imports and renders `<Nav />`, `<main>` containing `<Hero />`, `<Features />`, `<Pricing />`, `<FAQ />`, `<CTA />`, and `<Footer />`. Exports `metadata` overrides for the homepage (`title: "Uncle Inc. — Validate Your Startup Idea Before You Build It"`).
+- `app/api/waitlist/route.ts` — POST handler. Validates email, attempts Supabase insert if env vars are present, otherwise logs to console. Always returns 200 `{ ok: true }` to the client unless validation fails (400). Sets `Cache-Control: no-store`.
+- `components/Nav.tsx` — client component (uses `useState` for mobile menu). Sticky header, wordmark, three anchor links, "Join Waitlist" button (anchor to `#waitlist`). Mobile hamburger with full-screen sheet.
+- `components/Hero.tsx` — server component. Eyebrow, H1, subhead, two CTAs (primary = anchor to `#waitlist`, secondary = anchor to `#features`).
+- `components/Features.tsx` — server component. Section wrapper with id and header, then a 3×2 grid of `FeatureCard` items (defined inline or as a local sub-component in the same file).
+- `components/Pricing.tsx` — server component. Section with header and 3-column grid of `TierCard` items. Middle card has `relative` + `border-2 border-cobalt` + `MOST POPULAR` pill.
+- `components/FAQ.tsx` — client component (uses `<details>` natively; no state needed). Renders the 6-item list with lucide `Plus` chevron rotated via `[&[open]>summary_svg]:rotate-45` Tailwind arbitrary variant.
+- `components/CTA.tsx` — client component (form state). Email input, submit button, honeypot field. Handles submit → POST → swap to success message.
+- `components/Footer.tsx` — server component. Wordmark, Privacy/Terms anchors, copyright.
+- `lib/supabase.ts` — optional. Exports a `getSupabaseAdmin()` factory that returns a Supabase client using `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` if both are set, otherwise returns `null`. Imported by the route handler.
+- `lib/validate.ts` — exports `isValidEmail(value: string): boolean` (single regex, used in both client and server).
+- `.env.example` — documents `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` as optional. Includes a comment that the site works without them (fallback log-only mode).
+- `README.md` — one paragraph: what Uncle is, `npm install` / `npm run dev` / `npm run build`, link to the optional env vars, and a note that there are no fake metrics on the page by design.
 
 ## 10. ACCEPTANCE
 
-- [ ] `npm install` then `npm run dev` starts the app on `http://localhost:3000` with no errors and no TypeScript errors.
-- [ ] `npm run build` completes successfully.
-- [ ] Visiting `/` renders the full page: Nav, Hero, HowItWorks (3 steps), Features (6 cards in 3-col grid on desktop), Pricing (3 tiers, middle visually marked popular), FAQ (6 items), CTA band, Footer — in that order.
-- [ ] Color tokens match: navy #1A3A5C, cobalt #4A90D9, accent #22C55E are present in `tailwind.config.ts` and used in the rendered output (verifiable via DevTools).
-- [ ] Fonts: Inter is applied to h1–h4; IBM Plex Sans is applied to body, paragraphs, buttons, and FAQ answers.
-- [ ] Nav is sticky on scroll; clicking "Features", "Pricing", "FAQ" smooth-scrolls to the correct section.
-- [ ] Hero primary CTA scrolls to the waitlist band; secondary CTA scrolls to the "How it works" section.
-- [ ] All three pricing card CTAs scroll to the waitlist band.
-- [ ] FAQ rows expand and collapse on click; only one row is open at a time; keyboard accessible (Tab focuses, Enter/Space toggles).
-- [ ] Waitlist form: submitting a valid email shows a success message; submitting an invalid email shows an inline error; button is disabled during the request.
-- [ ] `/api/waitlist` returns `{ ok: true }` for valid emails and HTTP 400 for invalid.
-- [ ] `/privacy` and `/terms` render with Nav and Footer and a single paragraph of placeholder copy each.
-- [ ] No fake testimonials, no invented customer logos, no fabricated user counts or metrics anywhere on the page. The only copy in the page is the product's own value proposition, feature descriptions, prices, and FAQ answers.
-- [ ] Responsive: at 640px width, nav collapses to logo + CTA only, feature grid is 1-column, pricing stacks, FAQ is full width, CTA form stacks.
-- [ ] Lighthouse a11y score ≥ 95 on `/`: every interactive element has a focus ring, all images/icons have `aria-hidden` where decorative, form has a visible label, color contrast meets WCAG AA.
+The build is "done and working" when every item below is true:
 
-FILES: ["package.json","next.config.js","tsconfig.json","tailwind.config.ts","postcss.config.js","app/globals.css","app/layout.tsx","app/page.tsx","app/privacy/page.tsx","app/terms/page.tsx","app/api/waitlist/route.ts","components/Nav.tsx","components/Hero.tsx","components/HowItWorks.tsx","components/Features.tsx","components/FeatureCard.tsx","components/icons.tsx","components/Pricing.tsx","components/PricingCard.tsx","components/FAQ.tsx","components/FAQItem.tsx","components/CTA.tsx","components/Footer.tsx","components/Logo.tsx","components/Section.tsx","public/favicon.ico"]
+- [ ] `npm install && npm run dev` starts the site on `http://localhost:3000` with no console errors and no TypeScript errors.
+- [ ] `npm run build` completes successfully (production build).
+- [ ] `app/page.tsx` renders the seven sections in order: Nav, Hero, Features, Pricing, FAQ, CTA, Footer.
+- [ ] Tailwind config defines `navy` (`#1A3A5C`), `cobalt` (`#4A90D9`), `accent` (`#22C55E`), `ink`, and `canvas` and these are used in components — no raw hex strings in JSX.
+- [ ] `app/layout.tsx` loads Inter and IBM Plex Sans via `next/font/google` and applies them via CSS variables; heading text is in Inter, body in IBM Plex Sans (visually verifiable).
+- [ ] The Hero H1 reads exactly "Validate Your Startup Idea Before You Build It" and the subhead references the AI-assisted MVP platform.
+- [ ] Hero has exactly two CTA buttons: a primary accent "Join the Waitlist" (anchors to `#waitlist`) and a secondary outlined "See How It Works" (anchors to `#features`).
+- [ ] Features section has exactly six cards with the specified titles in the specified order, each with a lucide icon, a one-line description, and the navy/cobalt/white treatment.
+- [ ] Pricing section has exactly three tiers with the exact names, prices, and "MOST POPULAR" treatment on Builder.
+- [ ] FAQ section has exactly six items, each expandable, with the specified questions and answers.
+- [ ] CTA section is `bg-navy`, has an email input, a "Join Waitlist" submit button, and confirmation behavior: submitting swaps the form for a success message; invalid email shows a red border + helper text; server error keeps the form and shows a "Try again" hint.
+- [ ] `/api/waitlist` returns 200 `{ ok: true }` for a valid email in fallback log-only mode (no Supabase env vars) and 400 for an invalid email.
+- [ ] Nav is sticky at the top, has the wordmark, the three in-page links, and a "Join Waitlist" button. On `< md` viewports, a hamburger opens a full-screen sheet with the same items.
+- [ ] Footer shows "© 2026 Uncle Inc." and Privacy / Terms anchor links.
+- [ ] There are **no** fake testimonials, no customer logos, no download counts, no "as seen in" press lines, no star ratings anywhere on the page.
+- [ ] The site is responsive at 360px, 768px, 1024px, and 1440px widths with no horizontal scroll.
+- [ ] Lighthouse Best Practices score ≥ 90 on a production build (no broken images, valid `<html lang>`, `<button>` for buttons, `<a>` for links, sufficient color contrast on navy/white and accent/white pairs).
+- [ ] Focus rings are visible on keyboard tab through all interactive elements.
+- [ ] `prefers-reduced-motion: reduce` disables smooth scroll (handled in `globals.css` with `@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }`).
+
+FILES: ["package.json", "next.config.js", "tsconfig.json", "tailwind.config.ts", "postcss.config.js", "app/globals.css", "app/layout.tsx", "app/page.tsx", "app/api/waitlist/route.ts", "components/Nav.tsx", "components/Hero.tsx", "components/Features.tsx", "components/Pricing.tsx", "components/FAQ.tsx", "components/CTA.tsx", "components/Footer.tsx", "lib/supabase.ts", "lib/validate.ts", ".env.example", "README.md"]
